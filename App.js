@@ -11,12 +11,18 @@ import {
   ActivityIndicator,
   RefreshControl,
   StyleSheet,
+  Button,
+  StatusBar,
 } from 'react-native';
 import {Text, Header} from 'react-native-elements';
 
 class MainView extends Component {
   static navigationOptions = {
     title: 'Should i Dud?',
+    headerTintColor: 'white',
+    headerStyle: {
+      backgroundColor: 'black',
+    },
   };
 
   state = {
@@ -59,6 +65,7 @@ class MainView extends Component {
       <View
         style={{...styles.container, backgroundColor: this.state.level.color}}
       >
+        <StatusBar barStyle="light-content" />
         {this.state.loading
           ? <ActivityIndicator color="white" />
           : <View style={styles.container}>
@@ -101,9 +108,20 @@ const MainScreenNavigator = StackNavigator ({
   Home: {screen: MainView},
 });
 
+const WelcomeButton = props => (
+  <View style={styles.container}>
+    <Button onPress={props.onPress} title="Should i Dud??" />
+  </View>
+);
+
 export default class App extends Component {
+  state = {
+    showMain: false,
+  };
   render () {
-    return <MainScreenNavigator />;
+    return this.state.showMain
+      ? <MainScreenNavigator />
+      : <WelcomeButton onPress={() => this.setState ({showMain: true})} />;
   }
 }
 
